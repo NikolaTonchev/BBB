@@ -3,32 +3,22 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Dotnet Restore') {
             steps {
-                checkout scm
+                bat 'dotnet restore'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build --configuration Release'
+                bat 'dotnet build --no-restore'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'dotnet test --configuration Release --no-build'
+                bat 'dotnet test --no-build --verbosity normal'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build and tests completed successfully!'
-        }
-
-        failure {
-            echo 'Build or tests failed!'
         }
     }
 }
